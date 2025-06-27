@@ -1,7 +1,7 @@
 import { createSignal, Show } from "solid-js";
 import { JSX } from "solid-js/jsx-runtime";
 
-export default function Room(): JSX.Element {
+export default function CreateRoom(): JSX.Element {
   const [roomID] = createSignal<string | undefined>(undefined);
 
   return (
