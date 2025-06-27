@@ -1,9 +1,11 @@
 import { defineConfig } from "vite";
 import solidPlugin from "vite-plugin-solid";
 import eslint from "vite-plugin-eslint";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [
+    tailwindcss(),
     solidPlugin(),
     {
       // default settings on build (i.e. fail on error)
