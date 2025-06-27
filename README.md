@@ -1,5 +1,3 @@
-# SolisJS TypeScript Template
+# SolidJS Tic-Tac-Toe
 
-This is a repository for minimal SolidJS TypeScript template, adapted from [ts-minimal template](https://github.com/solidjs/templates/tree/main/ts-minimal).
-
-The only difference with `ts-minimal` template is that ESLint is included in this template.
+Create a tic-tac-toe game, which must be connected to [Axum Tic-Tac-Toe Server](https://github.com/iamdejan/axum-tic-tac-toe-server).
