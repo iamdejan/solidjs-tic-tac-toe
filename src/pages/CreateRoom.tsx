@@ -1,7 +1,7 @@
 import { useAtom } from "solid-jotai";
 import { createSignal, Match, onMount, Switch } from "solid-js";
 import { JSX } from "solid-js/jsx-runtime";
-import { webSocketAtom } from "../state/webSocketAtom";
+import webSocketAtom from "../state/webSocketAtom";
 import WSMessage from "../types/WSMessage";
 import CreateRoomResponse from "../types/CreateRoomResponse";
 
@@ -12,8 +12,10 @@ export default function CreateRoom(): JSX.Element {
     const message: WSMessage = {
       command: "create",
     };
+    console.log("Sending...");
     globalWebSocket()?.send(JSON.stringify(message));
-
+  });
+  onMount(() => {
     globalWebSocket()?.addEventListener("message", (ev) => {
       const data = ev.data as string;
       const createRoomResponse: CreateRoomResponse = JSON.parse(data);

@@ -8,9 +8,7 @@ import {
   createWSState,
 } from "@solid-primitives/websocket";
 import { useAtom } from "solid-jotai";
-import { webSocketAtom } from "./state/webSocketAtom";
-
-const states: string[] = ["Connecting", "Connected", "Closing", "Closed"];
+import webSocketAtom from "./state/webSocketAtom";
 
 export default function SiteRouter(): JSX.Element {
   const ws = createReconnectingWS(import.meta.env.VITE_SERVER_URL);
@@ -18,6 +16,7 @@ export default function SiteRouter(): JSX.Element {
   const [, setGlobalWebSocket] = useAtom(webSocketAtom);
   createEffect(() => {
     if (state() == WebSocket.OPEN) {
+      console.log("Connected to WebSocket");
       setGlobalWebSocket(ws);
     }
   });
@@ -26,7 +25,7 @@ export default function SiteRouter(): JSX.Element {
     <Switch
       fallback={
         <div class="flex flex-col justify-center items-center h-[100vh] w-[100vw] gap-8">
-          <p>Failed to connect! State: {states[state()]}</p>
+          <span class="loading loading-spinner" />
         </div>
       }
     >
