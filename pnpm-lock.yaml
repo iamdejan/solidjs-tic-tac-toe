@@ -20,6 +20,12 @@ importers:
       daisyui:
         specifier: ^5.0.43
         version: 5.0.43
+      jotai:
+        specifier: ^2.12.5
+        version: 2.12.5
+      solid-jotai:
+        specifier: ^0.3.1
+        version: 0.3.1(jotai@2.12.5)(solid-js@1.9.7)
       solid-js:
         specifier: ^1.9.7
         version: 1.9.7
@@ -1017,6 +1023,18 @@ packages:
     resolution: {integrity: sha512-rg9zJN+G4n2nfJl5MW3BMygZX56zKPNVEYYqq7adpmMh4Jn2QNEwhvQlFy6jPVdcod7txZtKHWnyZiA3a0zP7A==}
     hasBin: true
 
+  jotai@2.12.5:
+    resolution: {integrity: sha512-G8m32HW3lSmcz/4mbqx0hgJIQ0ekndKWiYP7kWVKi0p6saLXdSoye+FZiOFyonnd7Q482LCzm8sMDl7Ar1NWDw==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=17.0.0'
+      react: '>=17.0.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react:
+        optional: true
+
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
@@ -1288,6 +1306,12 @@ packages:
   shebang-regex@3.0.0:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
+
+  solid-jotai@0.3.1:
+    resolution: {integrity: sha512-mjwRzzBU0Awk9X9jxAvsQKwgi+VTaIhTshJAAJ/WIRVQNuTxe4bAcxevFeIl5sXM5Mat8rmsxsXc3LjsAF1ITg==}
+    peerDependencies:
+      jotai: '>=2.1.0'
+      solid-js: '>=1.6.0'
 
   solid-js@1.9.7:
     resolution: {integrity: sha512-/saTKi8iWEM233n5OSi1YHCCuh66ZIQ7aK2hsToPe4tqGm7qAejU1SwNuTPivbWAYq7SjuHVVYxxuZQNRbICiw==}
@@ -2344,6 +2368,8 @@ snapshots:
 
   jiti@2.4.2: {}
 
+  jotai@2.12.5: {}
+
   js-tokens@4.0.0: {}
 
   js-yaml@4.1.0:
@@ -2573,6 +2599,11 @@ snapshots:
       shebang-regex: 3.0.0
 
   shebang-regex@3.0.0: {}
+
+  solid-jotai@0.3.1(jotai@2.12.5)(solid-js@1.9.7):
+    dependencies:
+      jotai: 2.12.5
+      solid-js: 1.9.7
 
   solid-js@1.9.7:
     dependencies:
