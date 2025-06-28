@@ -10,6 +10,8 @@ import {
 import { useAtom } from "solid-jotai";
 import { webSocketAtom } from "./state/webSocketAtom";
 
+const states: string[] = ["Connecting", "Connected", "Closing", "Closed"];
+
 export default function SiteRouter(): JSX.Element {
   const ws = createReconnectingWS("wss://localhost:8080/ws");
   const state = createWSState(ws);
@@ -21,7 +23,13 @@ export default function SiteRouter(): JSX.Element {
   });
 
   return (
-    <Switch>
+    <Switch
+      fallback={
+        <div class="flex flex-col justify-center items-center h-[100vh] w-[100vw] gap-8">
+          <p>Failed to connect! State: {states[state()]}</p>
+        </div>
+      }
+    >
       <Match when={state() == WebSocket.CONNECTING}>
         <div class="flex flex-col justify-center items-center h-[100vh] w-[100vw] gap-8">
           <p>
