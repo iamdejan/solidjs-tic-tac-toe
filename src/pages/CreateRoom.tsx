@@ -3,15 +3,22 @@ import { createSignal, Match, onMount, Switch } from "solid-js";
 import { JSX } from "solid-js/jsx-runtime";
 import { webSocketAtom } from "../state/webSocketAtom";
 import WSMessage from "../types/WSMessage";
+import CreateRoomResponse from "../types/CreateRoomResponse";
 
 export default function CreateRoom(): JSX.Element {
-  const [roomID] = createSignal<string | undefined>(undefined);
+  const [roomID, setRoomID] = createSignal<string | undefined>(undefined);
   const [globalWebSocket] = useAtom(webSocketAtom);
   onMount(() => {
     const message: WSMessage = {
       command: "create",
     };
     globalWebSocket()?.send(JSON.stringify(message));
+
+    globalWebSocket()?.addEventListener("message", (ev) => {
+      const data = ev.data as string;
+      const createRoomResponse: CreateRoomResponse = JSON.parse(data);
+      setRoomID(createRoomResponse.room_id);
+    });
   });
 
   return (

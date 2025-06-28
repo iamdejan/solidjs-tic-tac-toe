@@ -13,7 +13,7 @@ import { webSocketAtom } from "./state/webSocketAtom";
 const states: string[] = ["Connecting", "Connected", "Closing", "Closed"];
 
 export default function SiteRouter(): JSX.Element {
-  const ws = createReconnectingWS("wss://localhost:8080/ws");
+  const ws = createReconnectingWS(import.meta.env.VITE_SERVER_URL);
   const state = createWSState(ws);
   const [, setGlobalWebSocket] = useAtom(webSocketAtom);
   createEffect(() => {
