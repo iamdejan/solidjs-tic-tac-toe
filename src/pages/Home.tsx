@@ -16,14 +16,17 @@ export default function Home(): JSX.Element {
     <div class="flex flex-col justify-center items-center h-[100vh] w-[100vw] gap-8">
       <Switch>
         <Match when={!userId()}>
-          <div>
+          <div class="flex justify-center items-center">
             <input
               type="text"
               class="input"
+              size={50}
               placeholder="User ID. This is mandatory."
               value={inputtedUserId()}
               onChange={(e) => setInputtedUserId(e.target.value)}
             />
+          </div>
+          <div>
             <button
               type="button"
               class="btn btn-neutral"
