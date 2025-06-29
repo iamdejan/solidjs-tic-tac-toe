@@ -9,11 +9,13 @@ import useRoomID from "../hooks/useRoomID";
 
 export default function CreateRoom(): JSX.Element {
   const userID = useUserID((state) => state.userID);
+
+  const roomID = useRoomID((state) => state.roomID);
+  const setRoomID = useRoomID((state) => state.setRoomID);
+
   const { send, status, data } = useWebSocket<string>(
     "wss://localhost:8080/ws",
   );
-  const roomID = useRoomID((state) => state.roomID);
-  const setRoomID = useRoomID((state) => state.setRoomID);
   const [hasSendRequest, setHasSendRequest] = createSignal<boolean>(false);
   const navigate = useNavigate();
 
