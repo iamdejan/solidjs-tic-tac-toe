@@ -1,6 +1,10 @@
+type Params = {
+  [key: string]: string;
+};
+
 type WSMessage = {
   command: "create" | "join" | "leave" | "move";
-  params?: Map<string, string>;
+  params: Params;
 };
 
 export default WSMessage;

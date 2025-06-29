@@ -1,26 +1,48 @@
-import { useAtom } from "solid-jotai";
-import { createSignal, Match, onMount, Switch } from "solid-js";
+import { createEffect, createSignal, Match, onCleanup, Switch } from "solid-js";
 import { JSX } from "solid-js/jsx-runtime";
-import webSocketAtom from "../state/webSocketAtom";
+import { useWebSocket } from "solidjs-use";
 import WSMessage from "../types/WSMessage";
+import useUserID from "../hooks/useUserID";
 import CreateRoomResponse from "../types/CreateRoomResponse";
 
 export default function CreateRoom(): JSX.Element {
+  const userID = useUserID((state) => state.userID);
+  const { send, status, ws } = useWebSocket("wss://localhost:8080/ws");
   const [roomID, setRoomID] = createSignal<string | undefined>(undefined);
-  const [globalWebSocket] = useAtom(webSocketAtom);
-  onMount(() => {
-    const message: WSMessage = {
-      command: "create",
-    };
-    console.log("Sending...");
-    globalWebSocket()?.send(JSON.stringify(message));
+  const [hasSendRequest, setHasSendRequest] = createSignal<boolean>(false);
+
+  createEffect(() => {
+    if (status() == "OPEN" && !hasSendRequest()) {
+      const message: WSMessage = {
+        command: "create",
+        params: {
+          user_id: userID()!,
+        },
+      };
+      send(JSON.stringify(message));
+      setHasSendRequest(true);
+    }
   });
-  onMount(() => {
-    globalWebSocket()?.addEventListener("message", (ev) => {
-      const data = ev.data as string;
-      const createRoomResponse: CreateRoomResponse = JSON.parse(data);
-      setRoomID(createRoomResponse.room_id);
-    });
+
+  function handleRoomID(ev: MessageEvent<string>): void {
+    const data = ev.data as string;
+    const createRoomResponse: CreateRoomResponse = JSON.parse(data);
+    if (createRoomResponse.user_id != userID()) {
+      return;
+    }
+    setRoomID(createRoomResponse.room_id);
+  }
+
+  createEffect(() => {
+    if (roomID()) {
+      return;
+    }
+
+    ws()?.addEventListener("message", handleRoomID);
+  });
+
+  onCleanup(() => {
+    ws()?.removeEventListener("message", handleRoomID);
   });
 
   return (
