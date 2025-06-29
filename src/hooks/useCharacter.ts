@@ -6,10 +6,13 @@ type CharacterState = {
   setCharacter: (character: string) => void;
 };
 
+const localStorageKey = "character";
+
 const useCharacter = createWithSignal<CharacterState>((set) => ({
-  character: "",
+  character: localStorage.getItem(localStorageKey) ?? "",
   setCharacter: (character: string) =>
     set(() => {
+      localStorage.setItem(localStorageKey, character);
       return {
         character: character,
       };

@@ -6,10 +6,13 @@ type RoomIDState = {
   setRoomID: (roomID: string) => void;
 };
 
+const localStorageKey = "room_id";
+
 const useRoomID = createWithSignal<RoomIDState>((set) => ({
-  roomID: "",
+  roomID: localStorage.getItem(localStorageKey) ?? "",
   setRoomID: (roomID: string) =>
     set(() => {
+      localStorage.setItem(localStorageKey, roomID);
       return {
         roomID: roomID,
       };

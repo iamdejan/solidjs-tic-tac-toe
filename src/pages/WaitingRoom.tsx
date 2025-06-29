@@ -6,6 +6,7 @@ import WebSocketResponse from "../types/CreateRoomResponse";
 import useUserID from "../hooks/useUserID";
 import useCharacter from "../hooks/useCharacter";
 import WSMessage from "../types/WSMessage";
+import { useNavigate } from "@solidjs/router";
 
 export default function WaitingRoom(): JSX.Element {
   const roomID = useRoomID((state) => state.roomID);
@@ -15,6 +16,7 @@ export default function WaitingRoom(): JSX.Element {
     "wss://localhost:8080/ws",
   );
   const [hasSendRequest, setHasSendRequest] = createSignal<boolean>(false);
+  const navigate = useNavigate();
 
   createEffect(() => {
     if (status() == "OPEN" && roomID() && userID() && !hasSendRequest()) {
@@ -54,6 +56,7 @@ export default function WaitingRoom(): JSX.Element {
         setCharacter(parsedResponse.character);
         break;
       case "GAME_STARTED":
+        navigate("/game-room");
         break;
       default:
         break;

@@ -13,7 +13,9 @@ const useUserID = createWithSignal<UserIDState>((set) => ({
   setUserID: (userID: string) =>
     set(() => {
       localStorage.setItem(localStorageKey, userID);
-      return { userID: userID };
+      return {
+        userID: userID,
+      };
     }),
 }));
 export default useUserID;
