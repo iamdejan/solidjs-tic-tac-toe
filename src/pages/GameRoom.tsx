@@ -8,27 +8,21 @@ import WebSocketMessage from "../types/WebSocketMessage";
 import useUserID from "../hooks/useUserID";
 import useBoard from "../hooks/useBoard";
 import useLatestEvent from "../hooks/useLatestEvent";
-import useCharacter from "../hooks/useCharacter";
 import { useNavigate } from "@solidjs/router";
 
 export default function GameRoom(): JSX.Element {
   const userID = useUserID((state) => state.userID);
 
   const roomID = useRoomID((state) => state.roomID);
-  const unsetRoomID = useRoomID((state) => state.unsetRoomID);
-
-  const unsetCharacter = useCharacter((state) => state.unsetCharacter);
 
   const board = useBoard((state) => state.board);
   const setBoard = useBoard((state) => state.setBoard);
-  const clearBoard = useBoard((state) => state.clear);
 
   const { status, send, data } = useWebSocket<string>(
     "wss://localhost:8080/ws",
   );
   const latestEvent = useLatestEvent((state) => state.latestEvent);
   const setLatestEvent = useLatestEvent((state) => state.setLatestEvent);
-  const clearLatestEvent = useLatestEvent((state) => state.clear);
   const navigate = useNavigate();
 
   createEffect(() => {
@@ -61,10 +55,6 @@ export default function GameRoom(): JSX.Element {
         alert("Oops! You lose!");
       }
 
-      unsetRoomID();
-      unsetCharacter();
-      clearBoard();
-      clearLatestEvent();
       navigate("/");
     }
 

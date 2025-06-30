@@ -17,13 +17,13 @@ export default function WaitingRoom(): JSX.Element {
   const unsetRoomID = useRoomID((state) => state.unsetRoomID);
 
   const setCharacter = useCharacter((state) => state.setCharacter);
-  const unsetCharacter = useCharacter((state) => state.unsetCharacter);
 
   const { status, send, data } = useWebSocket<string>(
     "wss://localhost:8080/ws",
   );
   const latestEvent = useLatestEvent((state) => state.latestEvent);
   const setLatestEvent = useLatestEvent((state) => state.setLatestEvent);
+
   const [hasSendRequest, setHasSendRequest] = createSignal<boolean>(false);
   const navigate = useNavigate();
 
@@ -79,8 +79,6 @@ export default function WaitingRoom(): JSX.Element {
         setCharacter(latestEvent()!.character!);
         break;
       case "ROOM_LEFT":
-        unsetRoomID();
-        unsetCharacter();
         navigate("/");
         break;
       case "GAME_STARTED":

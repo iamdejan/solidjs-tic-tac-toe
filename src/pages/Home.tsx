@@ -1,12 +1,29 @@
 import { JSX } from "solid-js/jsx-runtime";
-import { createSignal, Match, Switch } from "solid-js";
+import { createSignal, Match, onMount, Switch } from "solid-js";
 import useUserID from "../hooks/useUserID";
+import useRoomID from "../hooks/useRoomID";
+import useCharacter from "../hooks/useCharacter";
+import useBoard from "../hooks/useBoard";
+import useLatestEvent from "../hooks/useLatestEvent";
 
 export default function Home(): JSX.Element {
   const userID = useUserID((state) => state.userID);
   const setUserID = useUserID((state) => state.setUserID);
   const unsetUserID = useUserID((state) => state.unsetUserID);
   const [inputtedUserID, setInputtedUserID] = createSignal<string>("");
+
+  // cleanup
+  const unsetRoomID = useRoomID((state) => state.unsetRoomID);
+  const unsetCharacter = useCharacter((state) => state.unsetCharacter);
+  const clearBoard = useBoard((state) => state.clear);
+  const clearLatestEvent = useLatestEvent((state) => state.clear);
+
+  onMount(() => {
+    unsetRoomID();
+    unsetCharacter();
+    clearBoard();
+    clearLatestEvent();
+  });
 
   function handleInputtedUserID(
     e: InputEvent & {
