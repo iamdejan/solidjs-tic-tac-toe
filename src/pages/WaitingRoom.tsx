@@ -47,6 +47,13 @@ export default function WaitingRoom(): JSX.Element {
     }
 
     const parsedResponse: WebSocketResponse = JSON.parse(latestEvent);
+
+    if (parsedResponse.error) {
+      alert("Error: " + parsedResponse.error);
+      unsetRoomID();
+      throw navigate("/");
+    }
+
     if (parsedResponse.room_id != roomID()) {
       return;
     }

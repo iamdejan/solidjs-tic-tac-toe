@@ -44,7 +44,9 @@ export default function Home(): JSX.Element {
             <a href="/create-room" class="btn btn-neutral">
               Create Room
             </a>
-            <a class="btn btn-neutral">Join Room</a>
+            <a href="/join-room" class="btn btn-neutral">
+              Join Room
+            </a>
           </div>
         </Match>
       </Switch>
