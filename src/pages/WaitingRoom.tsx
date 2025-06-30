@@ -1,4 +1,4 @@
-import { JSX } from "solid-js/jsx-runtime";
+import { JSX } from "solid-js";
 import useRoomID from "../hooks/useRoomID";
 import { useWebSocket } from "solidjs-use";
 import { createEffect, createSignal, Show } from "solid-js";
@@ -60,14 +60,14 @@ export default function WaitingRoom(): JSX.Element {
       return;
     }
 
+    if (latestEvent()!.room_id !== roomID()) {
+      return;
+    }
+
     if (latestEvent()!.error) {
       alert("Error: " + latestEvent()!.error);
       unsetRoomID();
       throw navigate("/");
-    }
-
-    if (latestEvent()!.room_id !== roomID()) {
-      return;
     }
 
     switch (latestEvent()!.event) {

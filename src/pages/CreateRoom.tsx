@@ -1,5 +1,5 @@
 import { createEffect, createSignal, Show } from "solid-js";
-import { JSX } from "solid-js/jsx-runtime";
+import { JSX } from "solid-js";
 import { useWebSocket } from "solidjs-use";
 import WebSocketMessage from "../types/WebSocketMessage";
 import useUserID from "../hooks/useUserID";

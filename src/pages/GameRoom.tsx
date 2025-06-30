@@ -1,4 +1,4 @@
-import { JSX } from "solid-js/jsx-runtime";
+import { JSX } from "solid-js";
 import useRoomID from "../hooks/useRoomID";
 import CellButton from "../components/CellButton";
 import { useWebSocket } from "solidjs-use";
