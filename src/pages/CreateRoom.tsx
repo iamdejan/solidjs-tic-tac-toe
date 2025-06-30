@@ -33,6 +33,10 @@ export default function CreateRoom(): JSX.Element {
   });
 
   createEffect(() => {
+    if (!userID()) {
+      return;
+    }
+
     if (roomID()) {
       return;
     }
