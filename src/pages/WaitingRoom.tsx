@@ -24,7 +24,7 @@ export default function WaitingRoom(): JSX.Element {
   const navigate = useNavigate();
 
   createEffect(() => {
-    if (status() == "OPEN" && roomID() && userID() && !hasSendRequest()) {
+    if (status() === "OPEN" && roomID() && userID() && !hasSendRequest()) {
       const message: WSMessage = {
         command: "join",
         params: {
@@ -38,7 +38,7 @@ export default function WaitingRoom(): JSX.Element {
   });
 
   createEffect(() => {
-    if (status() != "OPEN") {
+    if (status() !== "OPEN") {
       return;
     }
 
@@ -55,17 +55,17 @@ export default function WaitingRoom(): JSX.Element {
       throw navigate("/");
     }
 
-    if (parsedResponse.room_id != roomID()) {
+    if (parsedResponse.room_id !== roomID()) {
       return;
     }
 
     switch (parsedResponse.event) {
       case "ROOM_JOINED":
-        if (parsedResponse.user_id != userID()) {
+        if (parsedResponse.user_id !== userID()) {
           break;
         }
 
-        setCharacter(parsedResponse.character);
+        setCharacter(parsedResponse.character!);
         break;
       case "ROOM_LEFT":
         unsetRoomID();

@@ -12,7 +12,8 @@ type WebSocketResponse = {
   room_id: string;
   user_id: string;
   event: Event;
-  character: Character;
+  character?: Character;
+  board_after_move?: string[][];
   error?: string;
 };
 export default WebSocketResponse;
