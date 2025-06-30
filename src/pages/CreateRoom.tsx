@@ -1,9 +1,9 @@
 import { createEffect, createSignal, Show } from "solid-js";
 import { JSX } from "solid-js/jsx-runtime";
 import { useWebSocket } from "solidjs-use";
-import WSMessage from "../types/WSMessage";
+import WebSocketMessage from "../types/WebSocketMessage";
 import useUserID from "../hooks/useUserID";
-import WebSocketResponse from "../types/CreateRoomResponse";
+import WebSocketResponse from "../types/WebSocketResponse";
 import { useNavigate } from "@solidjs/router";
 import useRoomID from "../hooks/useRoomID";
 
@@ -21,7 +21,7 @@ export default function CreateRoom(): JSX.Element {
 
   createEffect(() => {
     if (status() === "OPEN" && userID() && !hasSendRequest()) {
-      const message: WSMessage = {
+      const message: WebSocketMessage = {
         command: "create",
         params: {
           user_id: userID()!,

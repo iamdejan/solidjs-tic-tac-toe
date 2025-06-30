@@ -3,8 +3,8 @@ import useRoomID from "../hooks/useRoomID";
 import CellButton from "../components/CellButton";
 import { useWebSocket } from "solidjs-use";
 import { createEffect, Index } from "solid-js";
-import WebSocketResponse from "../types/CreateRoomResponse";
-import WSMessage from "../types/WSMessage";
+import WebSocketResponse from "../types/WebSocketResponse";
+import WebSocketMessage from "../types/WebSocketMessage";
 import useUserID from "../hooks/useUserID";
 import useBoard from "../hooks/useBoard";
 
@@ -45,7 +45,7 @@ export default function GameRoom(): JSX.Element {
   });
 
   function handleCellButtonClick(row: number, column: number) {
-    const message: WSMessage = {
+    const message: WebSocketMessage = {
       command: "move",
       params: {
         room_id: roomID()!,

@@ -2,10 +2,10 @@ import { JSX } from "solid-js/jsx-runtime";
 import useRoomID from "../hooks/useRoomID";
 import { useWebSocket } from "solidjs-use";
 import { createEffect, createSignal, Show } from "solid-js";
-import WebSocketResponse from "../types/CreateRoomResponse";
+import WebSocketResponse from "../types/WebSocketResponse";
 import useUserID from "../hooks/useUserID";
 import useCharacter from "../hooks/useCharacter";
-import WSMessage from "../types/WSMessage";
+import WebSocketMessage from "../types/WebSocketMessage";
 import { useNavigate } from "@solidjs/router";
 import CopyToClipboardButton from "../components/CopyToClipboardButton";
 
@@ -25,7 +25,7 @@ export default function WaitingRoom(): JSX.Element {
 
   createEffect(() => {
     if (status() === "OPEN" && roomID() && userID() && !hasSendRequest()) {
-      const message: WSMessage = {
+      const message: WebSocketMessage = {
         command: "join",
         params: {
           room_id: roomID()!,
@@ -86,7 +86,7 @@ export default function WaitingRoom(): JSX.Element {
       return;
     }
 
-    const message: WSMessage = {
+    const message: WebSocketMessage = {
       command: "leave",
       params: {
         room_id: roomID()!,
