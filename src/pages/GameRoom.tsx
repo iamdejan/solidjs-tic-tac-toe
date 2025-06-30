@@ -8,7 +8,11 @@ import WebSocketResponse from "../types/CreateRoomResponse";
 export default function GameRoom(): JSX.Element {
   const roomID = useRoomID((state) => state.roomID);
 
-  const [board, setBoard] = createSignal<Array<Array<string>>>([]);
+  const [board, setBoard] = createSignal<Array<Array<string>>>([
+    [" ", " ", " "],
+    [" ", " ", " "],
+    [" ", " ", " "],
+  ]);
 
   const { status, data } = useWebSocket<string>("wss://localhost:8080/ws");
 
