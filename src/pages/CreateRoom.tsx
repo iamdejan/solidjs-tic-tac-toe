@@ -1,11 +1,12 @@
 import { createEffect, createSignal, Show } from "solid-js";
 import { JSX } from "solid-js/jsx-runtime";
 import { useWebSocket } from "solidjs-use";
-import WSMessage from "../types/WSMessage";
+import WebSocketMessage from "../types/WebSocketMessage";
 import useUserID from "../hooks/useUserID";
-import WebSocketResponse from "../types/CreateRoomResponse";
+import WebSocketEvent from "../types/WebSocketEvent";
 import { useNavigate } from "@solidjs/router";
 import useRoomID from "../hooks/useRoomID";
+import useLatestEvent from "../hooks/useLatestEvent";
 
 export default function CreateRoom(): JSX.Element {
   const userID = useUserID((state) => state.userID);
@@ -16,12 +17,14 @@ export default function CreateRoom(): JSX.Element {
   const { send, status, data } = useWebSocket<string>(
     "wss://localhost:8080/ws",
   );
+  const latestEvent = useLatestEvent((state) => state.latestEvent);
+  const setLatestEvent = useLatestEvent((state) => state.setLatestEvent);
   const [hasSendRequest, setHasSendRequest] = createSignal<boolean>(false);
   const navigate = useNavigate();
 
   createEffect(() => {
     if (status() === "OPEN" && userID() && !hasSendRequest()) {
-      const message: WSMessage = {
+      const message: WebSocketMessage = {
         command: "create",
         params: {
           user_id: userID()!,
@@ -46,14 +49,22 @@ export default function CreateRoom(): JSX.Element {
       return;
     }
 
-    const parsedResponse: WebSocketResponse = JSON.parse(latestEvent);
-    if (parsedResponse.user_id !== userID()) {
+    const parsedEvent: WebSocketEvent = JSON.parse(latestEvent);
+    setLatestEvent(parsedEvent);
+  });
+
+  createEffect(() => {
+    if (!latestEvent()) {
       return;
     }
 
-    switch (parsedResponse.event) {
+    if (latestEvent()!.user_id !== userID()) {
+      return;
+    }
+
+    switch (latestEvent()!.event) {
       case "ROOM_CREATED":
-        setRoomID(parsedResponse.room_id);
+        setRoomID(latestEvent()!.room_id);
         navigate("/waiting-room");
         break;
       default:

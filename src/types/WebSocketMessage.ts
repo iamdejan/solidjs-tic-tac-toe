@@ -2,9 +2,9 @@ type Params = {
   [key: string]: string;
 };
 
-type WSMessage = {
+type WebSocketMessage = {
   command: "create" | "join" | "leave" | "move";
   params: Params;
 };
 
-export default WSMessage;
+export default WebSocketMessage;

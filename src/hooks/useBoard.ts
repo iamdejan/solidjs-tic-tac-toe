@@ -4,6 +4,7 @@ type BoardState = {
   board: Array<Array<string>>;
   // eslint-disable-next-line no-unused-vars
   setBoard: (board: Array<Array<string>>) => void;
+  clear: () => void;
 };
 
 const localStorageKey = "board";
@@ -31,6 +32,13 @@ const useBoard = createWithSignal<BoardState>((set) => ({
       localStorage.setItem(localStorageKey, JSON.stringify(board));
       return {
         board: board,
+      };
+    }),
+  clear: () =>
+    set(() => {
+      localStorage.removeItem(localStorageKey);
+      return {
+        board: emptyBoard,
       };
     }),
 }));

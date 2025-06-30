@@ -2,12 +2,13 @@ import { JSX } from "solid-js/jsx-runtime";
 import useRoomID from "../hooks/useRoomID";
 import { useWebSocket } from "solidjs-use";
 import { createEffect, createSignal, Show } from "solid-js";
-import WebSocketResponse from "../types/CreateRoomResponse";
+import WebSocketEvent from "../types/WebSocketEvent";
 import useUserID from "../hooks/useUserID";
 import useCharacter from "../hooks/useCharacter";
-import WSMessage from "../types/WSMessage";
+import WebSocketMessage from "../types/WebSocketMessage";
 import { useNavigate } from "@solidjs/router";
 import CopyToClipboardButton from "../components/CopyToClipboardButton";
+import useLatestEvent from "../hooks/useLatestEvent";
 
 export default function WaitingRoom(): JSX.Element {
   const userID = useUserID((state) => state.userID);
@@ -16,16 +17,19 @@ export default function WaitingRoom(): JSX.Element {
   const unsetRoomID = useRoomID((state) => state.unsetRoomID);
 
   const setCharacter = useCharacter((state) => state.setCharacter);
+  const unsetCharacter = useCharacter((state) => state.unsetCharacter);
 
   const { status, send, data } = useWebSocket<string>(
     "wss://localhost:8080/ws",
   );
+  const latestEvent = useLatestEvent((state) => state.latestEvent);
+  const setLatestEvent = useLatestEvent((state) => state.setLatestEvent);
   const [hasSendRequest, setHasSendRequest] = createSignal<boolean>(false);
   const navigate = useNavigate();
 
   createEffect(() => {
     if (status() === "OPEN" && roomID() && userID() && !hasSendRequest()) {
-      const message: WSMessage = {
+      const message: WebSocketMessage = {
         command: "join",
         params: {
           room_id: roomID()!,
@@ -47,28 +51,36 @@ export default function WaitingRoom(): JSX.Element {
       return;
     }
 
-    const parsedResponse: WebSocketResponse = JSON.parse(latestEvent);
+    const parsedResponse: WebSocketEvent = JSON.parse(latestEvent);
+    setLatestEvent(parsedResponse);
+  });
 
-    if (parsedResponse.error) {
-      alert("Error: " + parsedResponse.error);
+  createEffect(() => {
+    if (!latestEvent()) {
+      return;
+    }
+
+    if (latestEvent()!.error) {
+      alert("Error: " + latestEvent()!.error);
       unsetRoomID();
       throw navigate("/");
     }
 
-    if (parsedResponse.room_id !== roomID()) {
+    if (latestEvent()!.room_id !== roomID()) {
       return;
     }
 
-    switch (parsedResponse.event) {
+    switch (latestEvent()!.event) {
       case "ROOM_JOINED":
-        if (parsedResponse.user_id !== userID()) {
+        if (latestEvent()!.user_id !== userID()) {
           break;
         }
 
-        setCharacter(parsedResponse.character!);
+        setCharacter(latestEvent()!.character!);
         break;
       case "ROOM_LEFT":
         unsetRoomID();
+        unsetCharacter();
         navigate("/");
         break;
       case "GAME_STARTED":
@@ -86,7 +98,7 @@ export default function WaitingRoom(): JSX.Element {
       return;
     }
 
-    const message: WSMessage = {
+    const message: WebSocketMessage = {
       command: "leave",
       params: {
         room_id: roomID()!,
