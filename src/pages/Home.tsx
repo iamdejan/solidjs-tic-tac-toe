@@ -5,11 +5,26 @@ import useUserID from "../hooks/useUserID";
 export default function Home(): JSX.Element {
   const userID = useUserID((state) => state.userID);
   const setUserID = useUserID((state) => state.setUserID);
+  const unsetUserID = useUserID((state) => state.unsetUserID);
   const [inputtedUserID, setInputtedUserID] = createSignal<string>("");
 
+  function handleInputtedUserID(
+    e: InputEvent & {
+      currentTarget: HTMLInputElement;
+      target: HTMLInputElement;
+    },
+  ) {
+    e.preventDefault();
+    e.target.value = e.target.value.trim();
+    e.target.value = e.target.value.replace(/\s/g, "");
+    setInputtedUserID(e.target.value);
+  }
+
   function handleUserID() {
-    setUserID(inputtedUserID());
-    return;
+    if (inputtedUserID() && inputtedUserID().length > 0) {
+      setUserID(inputtedUserID());
+      setInputtedUserID("");
+    }
   }
 
   return (
@@ -23,7 +38,7 @@ export default function Home(): JSX.Element {
               size={50}
               placeholder="User ID. This is mandatory."
               value={inputtedUserID()}
-              onChange={(e) => setInputtedUserID(e.target.value)}
+              onInput={(e) => handleInputtedUserID(e)}
             />
           </div>
           <div>
@@ -40,7 +55,10 @@ export default function Home(): JSX.Element {
           <div>
             <h1 class="text-4xl font-bold">Welcome to Tic-Tac-Toe Game!</h1>
           </div>
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-3 gap-4">
+            <button type="button" class="btn btn-neutral" onClick={unsetUserID}>
+              Reset User ID
+            </button>
             <a href="/create-room" class="btn btn-neutral">
               Create Room
             </a>

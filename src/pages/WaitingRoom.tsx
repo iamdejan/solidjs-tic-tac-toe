@@ -7,6 +7,7 @@ import useUserID from "../hooks/useUserID";
 import useCharacter from "../hooks/useCharacter";
 import WSMessage from "../types/WSMessage";
 import { useNavigate } from "@solidjs/router";
+import CopyToClipboardButton from "../components/CopyToClipboardButton";
 
 export default function WaitingRoom(): JSX.Element {
   const userID = useUserID((state) => state.userID);
@@ -98,21 +99,36 @@ export default function WaitingRoom(): JSX.Element {
 
   return (
     <div class="flex flex-col justify-center items-center h-[100vh] w-[100vw] gap-8">
-      <h2 class="text-2xl">Room {roomID()}</h2>
-      <p>
-        Waiting for other player... <span class="loading loading-spinner" />
-      </p>
-      <button
-        type="button"
-        class="btn"
-        onClick={leaveRoom}
-        disabled={isLeaveInProcess()}
+      <Show
+        when={roomID()}
+        fallback={
+          <>
+            <p>You haven't inputted room ID</p>
+            <a class="link" href="/">
+              Go back to home page
+            </a>
+          </>
+        }
       >
-        Leave
-        <Show when={isLeaveInProcess()}>
-          <span class="loading loading-spinner" />
-        </Show>
-      </button>
+        <h2 class="text-2xl">Room {roomID()!}</h2>
+        <div>
+          <CopyToClipboardButton value={() => roomID()!} text="Copy Room ID" />
+        </div>
+        <p>
+          Waiting for other player... <span class="loading loading-spinner" />
+        </p>
+        <button
+          type="button"
+          class="btn"
+          onClick={leaveRoom}
+          disabled={isLeaveInProcess()}
+        >
+          Leave
+          <Show when={isLeaveInProcess()}>
+            <span class="loading loading-spinner" />
+          </Show>
+        </button>
+      </Show>
     </div>
   );
 }
