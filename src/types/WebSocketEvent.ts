@@ -6,7 +6,7 @@ type EventType =
   | "MOVE_REGISTERED"
   | "GAME_FINISHED";
 
-type Character = "x" | "o";
+type Character = "X" | "O";
 
 type WebSocketEvent = {
   room_id: string;
@@ -14,6 +14,7 @@ type WebSocketEvent = {
   event: EventType;
   character?: Character;
   board_after_move?: string[][];
+  winner_user_id?: string;
   error?: string;
 };
 export default WebSocketEvent;
