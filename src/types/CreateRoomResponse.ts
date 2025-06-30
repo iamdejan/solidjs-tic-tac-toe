@@ -13,5 +13,6 @@ type WebSocketResponse = {
   user_id: string;
   event: Event;
   character: Character;
+  error?: string;
 };
 export default WebSocketResponse;

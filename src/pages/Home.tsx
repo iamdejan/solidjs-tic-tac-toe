@@ -3,40 +3,40 @@ import { createSignal, Match, Switch } from "solid-js";
 import useUserID from "../hooks/useUserID";
 
 export default function Home(): JSX.Element {
-  const userId = useUserID((state) => state.userID);
-  const setUserId = useUserID((state) => state.setUserID);
-  const [inputtedUserId, setInputtedUserId] = createSignal<string>("");
+  const userID = useUserID((state) => state.userID);
+  const setUserID = useUserID((state) => state.setUserID);
+  const [inputtedUserID, setInputtedUserID] = createSignal<string>("");
 
-  function handleUserId() {
-    setUserId(inputtedUserId());
+  function handleUserID() {
+    setUserID(inputtedUserID());
     return;
   }
 
   return (
     <div class="flex flex-col justify-center items-center h-[100vh] w-[100vw] gap-8">
       <Switch>
-        <Match when={!userId()}>
+        <Match when={!userID()}>
           <div class="flex justify-center items-center">
             <input
               type="text"
               class="input"
               size={50}
               placeholder="User ID. This is mandatory."
-              value={inputtedUserId()}
-              onChange={(e) => setInputtedUserId(e.target.value)}
+              value={inputtedUserID()}
+              onChange={(e) => setInputtedUserID(e.target.value)}
             />
           </div>
           <div>
             <button
               type="button"
               class="btn btn-neutral"
-              onClick={handleUserId}
+              onClick={handleUserID}
             >
               Save User ID
             </button>
           </div>
         </Match>
-        <Match when={userId()}>
+        <Match when={userID()}>
           <div>
             <h1 class="text-4xl font-bold">Welcome to Tic-Tac-Toe Game!</h1>
           </div>
@@ -44,7 +44,9 @@ export default function Home(): JSX.Element {
             <a href="/create-room" class="btn btn-neutral">
               Create Room
             </a>
-            <a class="btn btn-neutral">Join Room</a>
+            <a href="/join-room" class="btn btn-neutral">
+              Join Room
+            </a>
           </div>
         </Match>
       </Switch>

@@ -27,8 +27,8 @@ export default function WaitingRoom(): JSX.Element {
       const message: WSMessage = {
         command: "join",
         params: {
-          room_id: roomID(),
-          user_id: userID(),
+          room_id: roomID()!,
+          user_id: userID()!,
         },
       };
       send(JSON.stringify(message));
@@ -47,6 +47,13 @@ export default function WaitingRoom(): JSX.Element {
     }
 
     const parsedResponse: WebSocketResponse = JSON.parse(latestEvent);
+
+    if (parsedResponse.error) {
+      alert("Error: " + parsedResponse.error);
+      unsetRoomID();
+      throw navigate("/");
+    }
+
     if (parsedResponse.room_id != roomID()) {
       return;
     }
@@ -74,11 +81,15 @@ export default function WaitingRoom(): JSX.Element {
   const [isLeaveInProcess, setIsLeaveInProcess] = createSignal<boolean>(false);
 
   function leaveRoom() {
+    if (!roomID() || !userID()) {
+      return;
+    }
+
     const message: WSMessage = {
       command: "leave",
       params: {
-        room_id: roomID(),
-        user_id: userID(),
+        room_id: roomID()!,
+        user_id: userID()!,
       },
     };
     send(JSON.stringify(message));
