@@ -1,27 +1,27 @@
 import { createWithSignal } from "solid-zustand";
-import WebSocketResponse from "../types/WebSocketResponse";
+import WebSocketEvent from "../types/WebSocketEvent";
 
 type LatestEventState = {
-  latestEvent?: WebSocketResponse;
+  latestEvent?: WebSocketEvent;
   // eslint-disable-next-line no-unused-vars
-  setLatestEvent: (latestEvent: WebSocketResponse) => void;
+  setLatestEvent: (latestEvent: WebSocketEvent) => void;
 };
 
 const localStorageKey = "latest_event";
 
-function getLatestEvent(): WebSocketResponse | undefined {
+function getLatestEvent(): WebSocketEvent | undefined {
   const storageItem = localStorage.getItem(localStorageKey);
   if (!storageItem) {
     return undefined;
   }
 
-  const latestEvent: WebSocketResponse = JSON.parse(storageItem);
+  const latestEvent: WebSocketEvent = JSON.parse(storageItem);
   return latestEvent;
 }
 
 const useLatestEvent = createWithSignal<LatestEventState>((set) => ({
   latestEvent: getLatestEvent(),
-  setLatestEvent: (latestEvent: WebSocketResponse) =>
+  setLatestEvent: (latestEvent: WebSocketEvent) =>
     set(() => {
       localStorage.setItem(localStorageKey, JSON.stringify(latestEvent));
       return {

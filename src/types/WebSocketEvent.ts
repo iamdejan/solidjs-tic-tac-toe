@@ -1,4 +1,4 @@
-type Event =
+type EventType =
   | "ROOM_CREATED"
   | "ROOM_JOINED"
   | "ROOM_LEFT"
@@ -8,12 +8,12 @@ type Event =
 
 type Character = "x" | "o";
 
-type WebSocketResponse = {
+type WebSocketEvent = {
   room_id: string;
   user_id: string;
-  event: Event;
+  event: EventType;
   character?: Character;
   board_after_move?: string[][];
   error?: string;
 };
-export default WebSocketResponse;
+export default WebSocketEvent;

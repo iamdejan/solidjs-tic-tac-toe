@@ -3,10 +3,11 @@ import useRoomID from "../hooks/useRoomID";
 import CellButton from "../components/CellButton";
 import { useWebSocket } from "solidjs-use";
 import { createEffect, Index } from "solid-js";
-import WebSocketResponse from "../types/WebSocketResponse";
+import WebSocketEvent from "../types/WebSocketEvent";
 import WebSocketMessage from "../types/WebSocketMessage";
 import useUserID from "../hooks/useUserID";
 import useBoard from "../hooks/useBoard";
+import useLatestEvent from "../hooks/useLatestEvent";
 
 export default function GameRoom(): JSX.Element {
   const userID = useUserID((state) => state.userID);
@@ -19,6 +20,8 @@ export default function GameRoom(): JSX.Element {
   const { status, send, data } = useWebSocket<string>(
     "wss://localhost:8080/ws",
   );
+  const latestEvent = useLatestEvent((state) => state.latestEvent);
+  const setLatestEvent = useLatestEvent((state) => state.setLatestEvent);
 
   createEffect(() => {
     if (status() !== "OPEN") {
@@ -30,18 +33,25 @@ export default function GameRoom(): JSX.Element {
       return;
     }
 
-    const parsedResponse: WebSocketResponse = JSON.parse(latestEvent);
+    const parsedResponse: WebSocketEvent = JSON.parse(latestEvent);
+    setLatestEvent(parsedResponse);
+  });
 
-    if (parsedResponse.room_id !== roomID()) {
+  createEffect(() => {
+    if (!latestEvent()) {
+      return;
+    }
+
+    if (latestEvent()!.room_id !== roomID()) {
       return;
     }
 
     // ignore victory for now
-    if (parsedResponse.event !== "MOVE_REGISTERED") {
+    if (latestEvent()!.event !== "MOVE_REGISTERED") {
       return;
     }
 
-    setBoard(parsedResponse.board_after_move!);
+    setBoard(latestEvent()!.board_after_move!);
   });
 
   function handleCellButtonClick(row: number, column: number) {
