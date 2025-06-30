@@ -1,4 +1,4 @@
-import { JSX } from "solid-js/jsx-runtime";
+import { JSX } from "solid-js";
 import useRoomID from "../hooks/useRoomID";
 import CellButton from "../components/CellButton";
 import { useWebSocket } from "solidjs-use";
@@ -58,7 +58,11 @@ export default function GameRoom(): JSX.Element {
       navigate("/");
     }
 
-    // ignore victory for now
+    if (latestEvent()!.event === "GAME_DRAWN") {
+      alert("Game drawn...");
+      navigate("/");
+    }
+
     if (latestEvent()!.event !== "MOVE_REGISTERED") {
       return;
     }

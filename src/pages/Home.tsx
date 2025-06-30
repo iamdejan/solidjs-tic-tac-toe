@@ -1,4 +1,4 @@
-import { JSX } from "solid-js/jsx-runtime";
+import { JSX } from "solid-js";
 import { createSignal, Match, onMount, Switch } from "solid-js";
 import useUserID from "../hooks/useUserID";
 import useRoomID from "../hooks/useRoomID";

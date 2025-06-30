@@ -1,5 +1,5 @@
 import { Accessor } from "solid-js";
-import { JSX } from "solid-js/jsx-runtime";
+import { JSX } from "solid-js";
 import { useClipboard } from "solidjs-use";
 
 type Props = {

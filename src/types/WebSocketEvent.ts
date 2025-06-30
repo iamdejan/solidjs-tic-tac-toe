@@ -4,7 +4,8 @@ type EventType =
   | "ROOM_LEFT"
   | "GAME_STARTED"
   | "MOVE_REGISTERED"
-  | "GAME_FINISHED";
+  | "GAME_FINISHED"
+  | "GAME_DRAWN";
 
 type Character = "X" | "O";
 
