@@ -20,7 +20,7 @@ export default function CreateRoom(): JSX.Element {
   const navigate = useNavigate();
 
   createEffect(() => {
-    if (status() == "OPEN" && userID() && !hasSendRequest()) {
+    if (status() === "OPEN" && userID() && !hasSendRequest()) {
       const message: WSMessage = {
         command: "create",
         params: {
@@ -33,6 +33,10 @@ export default function CreateRoom(): JSX.Element {
   });
 
   createEffect(() => {
+    if (!userID()) {
+      return;
+    }
+
     if (roomID()) {
       return;
     }
@@ -43,7 +47,7 @@ export default function CreateRoom(): JSX.Element {
     }
 
     const parsedResponse: WebSocketResponse = JSON.parse(latestEvent);
-    if (parsedResponse.user_id != userID()) {
+    if (parsedResponse.user_id !== userID()) {
       return;
     }
 
