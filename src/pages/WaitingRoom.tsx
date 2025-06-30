@@ -27,8 +27,8 @@ export default function WaitingRoom(): JSX.Element {
       const message: WSMessage = {
         command: "join",
         params: {
-          room_id: roomID()!!,
-          user_id: userID()!!,
+          room_id: roomID()!,
+          user_id: userID()!,
         },
       };
       send(JSON.stringify(message));
@@ -81,8 +81,8 @@ export default function WaitingRoom(): JSX.Element {
     const message: WSMessage = {
       command: "leave",
       params: {
-        room_id: roomID()!!,
-        user_id: userID()!!,
+        room_id: roomID()!,
+        user_id: userID()!,
       },
     };
     send(JSON.stringify(message));
