@@ -1,7 +1,7 @@
 import { createWithSignal } from "solid-zustand";
 
 type UserIDState = {
-  userID: string;
+  userID?: string;
   // eslint-disable-next-line no-unused-vars
   setUserID: (userID: string) => void;
 };
@@ -9,7 +9,7 @@ type UserIDState = {
 const localStorageKey = "user_id";
 
 const useUserID = createWithSignal<UserIDState>((set) => ({
-  userID: localStorage.getItem(localStorageKey) ?? "",
+  userID: localStorage.getItem(localStorageKey) ?? undefined,
   setUserID: (userID: string) =>
     set(() => {
       localStorage.setItem(localStorageKey, userID);

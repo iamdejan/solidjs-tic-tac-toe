@@ -24,7 +24,7 @@ export default function CreateRoom(): JSX.Element {
       const message: WSMessage = {
         command: "create",
         params: {
-          user_id: userID(),
+          user_id: userID()!!,
         },
       };
       send(JSON.stringify(message));
